@@ -1,4 +1,4 @@
-# ChronosBridge
+﻿# ChronosBridge
 
 Universal calendar conversion engine for JavaScript.
 
@@ -27,23 +27,50 @@ It does **not** use observational moon-sighting datasets.
 
 This is expected to produce differences vs. regional religious authorities or observational calendars in some cases.
 
-## Current Project Layout
+## Project Layout
 
 ```text
 chronos-bridge/
-├── chronos-bridge.js
+├── src/
+│   ├── calendars/
+│   ├── core/
+│   └── index.js
+├── tests/
 ├── index.js
 └── package.json
 ```
 
-## Usage (planned package API)
+## Usage
 
 ```js
-import { ChronosBridge } from "chronos-bridge";
+import { convert, toJdn, fromJdn } from "chronos-bridge";
 
-const nowruz = ChronosBridge.Persian.findDateInGregorianYear(2026, 1, 1);
-console.log(nowruz?.toISOString());
+const jdn = toJdn("gregorian", { year: 2026, month: 5, day: 12 });
+const islamic = fromJdn("islamic", jdn);
+const hebrew = convert("gregorian", "hebrew", { year: 2026, month: 5, day: 12 });
+
+console.log({ jdn, islamic, hebrew });
 ```
+
+## Supported Conversions
+
+All conversions are routed through JDN:
+
+`Calendar A -> JDN -> Calendar B`
+
+Currently supported in the public bridge:
+- `Gregorian <-> JDN`
+- `Islamic <-> JDN`
+- `Hebrew <-> JDN`
+- `Persian <-> JDN`
+
+This means cross-conversions like these are supported via `convert(...)`:
+- `Gregorian <-> Islamic`
+- `Gregorian <-> Hebrew`
+- `Gregorian <-> Persian`
+- `Islamic <-> Hebrew`
+- `Islamic <-> Persian`
+- `Hebrew <-> Persian`
 
 ## Development Notes
 

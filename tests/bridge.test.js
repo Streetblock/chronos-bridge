@@ -4,6 +4,8 @@ import assert from 'node:assert/strict';
 import {
   gregorianToJdn,
   jdnToGregorian,
+  hebrewToJdn,
+  jdnToHebrew,
   islamicToJdn,
   jdnToIslamic,
   persianToJdn,
@@ -24,6 +26,13 @@ test('Islamic <-> JDN roundtrip is stable', () => {
   const input = { year: 1448, month: 9, day: 1 };
   const jdn = islamicToJdn(input);
   const output = jdnToIslamic(jdn);
+  assert.deepEqual(output, input);
+});
+
+test('Hebrew <-> JDN roundtrip is stable', () => {
+  const input = { year: 5786, month: 1, day: 15 };
+  const jdn = hebrewToJdn(input);
+  const output = jdnToHebrew(jdn);
   assert.deepEqual(output, input);
 });
 
@@ -53,5 +62,12 @@ test('convert supports Gregorian <-> Persian via JDN hub', () => {
   const gregorianInput = { year: 2026, month: 5, day: 12 };
   const persian = convert('gregorian', 'persian', gregorianInput);
   const gregorianRoundtrip = convert('persian', 'gregorian', persian);
+  assert.deepEqual(gregorianRoundtrip, gregorianInput);
+});
+
+test('convert supports Gregorian <-> Hebrew via JDN hub', () => {
+  const gregorianInput = { year: 2026, month: 5, day: 12 };
+  const hebrew = convert('gregorian', 'hebrew', gregorianInput);
+  const gregorianRoundtrip = convert('hebrew', 'gregorian', hebrew);
   assert.deepEqual(gregorianRoundtrip, gregorianInput);
 });

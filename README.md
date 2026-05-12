@@ -16,6 +16,17 @@ This package does **not** include:
 - legal-day classification
 - localization/business rules
 
+## Calendar Models (Important)
+
+ChronosBridge currently uses **deterministic algorithmic/tabular models**.
+It does **not** use observational moon-sighting datasets.
+
+- Islamic: arithmetic/tabular model (30-year leap cycle), not moon-sighting based.
+- Hebrew: fixed calculated rabbinic calendar (Metonic cycle + rule-based month lengths).
+- Persian (Jalali): arithmetic conversion model, not observatory/equinox-per-location calculation.
+
+This is expected to produce differences vs. regional religious authorities or observational calendars in some cases.
+
 ## Current Project Layout
 
 ```text

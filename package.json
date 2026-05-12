@@ -1,9 +1,15 @@
-{
+﻿{
   "name": "chronos-bridge",
   "version": "0.1.0",
   "description": "A high-precision calendar conversion engine using Julian Day Number (JDN) as a universal bridge for Gregorian, Hebrew, Islamic, and Persian systems.",
-  "main": "index.js",
   "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
   "keywords": ["calendar", "conversion", "hebrew", "islamic", "persian", "jdn"],
   "author": "David Block",
   "license": "MIT"

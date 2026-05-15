@@ -109,6 +109,22 @@ test('convert supports Gregorian <-> Saka via JDN hub', () => {
   assert.deepEqual(gregorianRoundtrip, gregorianInput);
 });
 
+test('Saka new year starts on March 22 in non-leap Gregorian years', () => {
+  const before = convert('gregorian', 'saka', { year: 2025, month: 3, day: 21 });
+  const start = convert('gregorian', 'saka', { year: 2025, month: 3, day: 22 });
+
+  assert.deepEqual(before, { year: 1946, month: 12, day: 30 });
+  assert.deepEqual(start, { year: 1947, month: 1, day: 1 });
+});
+
+test('Saka new year starts on March 21 in leap Gregorian years', () => {
+  const before = convert('gregorian', 'saka', { year: 2024, month: 3, day: 20 });
+  const start = convert('gregorian', 'saka', { year: 2024, month: 3, day: 21 });
+
+  assert.deepEqual(before, { year: 1945, month: 12, day: 30 });
+  assert.deepEqual(start, { year: 1946, month: 1, day: 1 });
+});
+
 test('convert supports Gregorian <-> Persian via JDN hub', () => {
   const gregorianInput = { year: 2026, month: 5, day: 12 };
   const persian = convert('gregorian', 'persian', gregorianInput);

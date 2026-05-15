@@ -1,11 +1,13 @@
 ﻿import { normalizeCalendarId } from './validation.js';
 import { gregorianToJdn, jdnToGregorian } from '../calendars/gregorian.js';
+import { julianToJdn, jdnToJulian } from '../calendars/julian.js';
 import { hebrewToJdn, jdnToHebrew } from '../calendars/hebrew.js';
 import { islamicToJdn, jdnToIslamic } from '../calendars/islamic.js';
 import { persianToJdn, jdnToPersian } from '../calendars/persian.js';
 
 const toJdnStrategies = {
   gregorian: gregorianToJdn,
+  julian: julianToJdn,
   hebrew: hebrewToJdn,
   islamic: islamicToJdn,
   persian: persianToJdn
@@ -13,6 +15,7 @@ const toJdnStrategies = {
 
 const fromJdnStrategies = {
   gregorian: jdnToGregorian,
+  julian: jdnToJulian,
   hebrew: jdnToHebrew,
   islamic: jdnToIslamic,
   persian: jdnToPersian

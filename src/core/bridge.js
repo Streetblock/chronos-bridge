@@ -1,5 +1,6 @@
 ﻿import { normalizeCalendarId } from './validation.js';
 import { gregorianToJdn, jdnToGregorian } from '../calendars/gregorian.js';
+import { frenchRepublicanToJdn, jdnToFrenchRepublican } from '../calendars/french-republican.js';
 import { isoWeekToJdn, jdnToIsoWeek } from '../calendars/iso-week.js';
 import { julianToJdn, jdnToJulian } from '../calendars/julian.js';
 import { sakaToJdn, jdnToSaka } from '../calendars/saka.js';
@@ -9,6 +10,7 @@ import { persianToJdn, jdnToPersian } from '../calendars/persian.js';
 
 const toJdnStrategies = {
   gregorian: gregorianToJdn,
+  'french-republican': frenchRepublicanToJdn,
   'iso-week': isoWeekToJdn,
   julian: julianToJdn,
   saka: sakaToJdn,
@@ -19,6 +21,7 @@ const toJdnStrategies = {
 
 const fromJdnStrategies = {
   gregorian: jdnToGregorian,
+  'french-republican': jdnToFrenchRepublican,
   'iso-week': jdnToIsoWeek,
   julian: jdnToJulian,
   saka: jdnToSaka,

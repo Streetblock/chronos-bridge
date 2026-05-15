@@ -4,6 +4,8 @@ import assert from 'node:assert/strict';
 import {
   gregorianToJdn,
   jdnToGregorian,
+  frenchRepublicanToJdn,
+  jdnToFrenchRepublican,
   isoWeekToJdn,
   jdnToIsoWeek,
   julianToJdn,
@@ -32,6 +34,13 @@ test('Julian <-> JDN roundtrip is stable', () => {
   const input = { year: 2026, month: 5, day: 2 };
   const jdn = julianToJdn(input);
   const output = jdnToJulian(jdn);
+  assert.deepEqual(output, input);
+});
+
+test('French Republican <-> JDN roundtrip is stable', () => {
+  const input = { year: 12, month: 13, day: 5 };
+  const jdn = frenchRepublicanToJdn(input);
+  const output = jdnToFrenchRepublican(jdn);
   assert.deepEqual(output, input);
 });
 
@@ -79,6 +88,7 @@ test('convert uses JDN hub (Gregorian -> Islamic)', () => {
 
 test('toJdn supports declared calendars', () => {
   assert.ok(supportedCalendars.includes('gregorian'));
+  assert.ok(supportedCalendars.includes('french-republican'));
   assert.ok(supportedCalendars.includes('iso-week'));
   assert.ok(supportedCalendars.includes('julian'));
   assert.ok(supportedCalendars.includes('saka'));
@@ -92,6 +102,13 @@ test('convert supports Gregorian <-> Julian via JDN hub', () => {
   const gregorianInput = { year: 2026, month: 5, day: 12 };
   const julian = convert('gregorian', 'julian', gregorianInput);
   const gregorianRoundtrip = convert('julian', 'gregorian', julian);
+  assert.deepEqual(gregorianRoundtrip, gregorianInput);
+});
+
+test('convert supports Gregorian <-> French Republican via JDN hub', () => {
+  const gregorianInput = { year: 2026, month: 5, day: 12 };
+  const fr = convert('gregorian', 'french-republican', gregorianInput);
+  const gregorianRoundtrip = convert('french-republican', 'gregorian', fr);
   assert.deepEqual(gregorianRoundtrip, gregorianInput);
 });
 
@@ -123,6 +140,14 @@ test('Saka new year starts on March 21 in leap Gregorian years', () => {
 
   assert.deepEqual(before, { year: 1945, month: 12, day: 30 });
   assert.deepEqual(start, { year: 1946, month: 1, day: 1 });
+});
+
+test('French Republican epoch maps to 1792-09-22', () => {
+  const frEpoch = convert('gregorian', 'french-republican', { year: 1792, month: 9, day: 22 });
+  assert.deepEqual(frEpoch, { year: 1, month: 1, day: 1 });
+
+  const gregorianEpoch = convert('french-republican', 'gregorian', { year: 1, month: 1, day: 1 });
+  assert.deepEqual(gregorianEpoch, { year: 1792, month: 9, day: 22 });
 });
 
 test('convert supports Gregorian <-> Persian via JDN hub', () => {

@@ -2,6 +2,7 @@
 import { gregorianToJdn, jdnToGregorian } from '../calendars/gregorian.js';
 import { isoWeekToJdn, jdnToIsoWeek } from '../calendars/iso-week.js';
 import { julianToJdn, jdnToJulian } from '../calendars/julian.js';
+import { sakaToJdn, jdnToSaka } from '../calendars/saka.js';
 import { hebrewToJdn, jdnToHebrew } from '../calendars/hebrew.js';
 import { islamicToJdn, jdnToIslamic } from '../calendars/islamic.js';
 import { persianToJdn, jdnToPersian } from '../calendars/persian.js';
@@ -10,6 +11,7 @@ const toJdnStrategies = {
   gregorian: gregorianToJdn,
   'iso-week': isoWeekToJdn,
   julian: julianToJdn,
+  saka: sakaToJdn,
   hebrew: hebrewToJdn,
   islamic: islamicToJdn,
   persian: persianToJdn
@@ -19,6 +21,7 @@ const fromJdnStrategies = {
   gregorian: jdnToGregorian,
   'iso-week': jdnToIsoWeek,
   julian: jdnToJulian,
+  saka: jdnToSaka,
   hebrew: jdnToHebrew,
   islamic: jdnToIslamic,
   persian: jdnToPersian

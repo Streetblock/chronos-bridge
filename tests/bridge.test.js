@@ -8,6 +8,8 @@ import {
   jdnToIsoWeek,
   julianToJdn,
   jdnToJulian,
+  sakaToJdn,
+  jdnToSaka,
   hebrewToJdn,
   jdnToHebrew,
   islamicToJdn,
@@ -37,6 +39,13 @@ test('ISO Week <-> JDN roundtrip is stable', () => {
   const input = { year: 2026, week: 20, day: 2 };
   const jdn = isoWeekToJdn(input);
   const output = jdnToIsoWeek(jdn);
+  assert.deepEqual(output, input);
+});
+
+test('Saka <-> JDN roundtrip is stable', () => {
+  const input = { year: 1948, month: 2, day: 1 };
+  const jdn = sakaToJdn(input);
+  const output = jdnToSaka(jdn);
   assert.deepEqual(output, input);
 });
 
@@ -72,6 +81,7 @@ test('toJdn supports declared calendars', () => {
   assert.ok(supportedCalendars.includes('gregorian'));
   assert.ok(supportedCalendars.includes('iso-week'));
   assert.ok(supportedCalendars.includes('julian'));
+  assert.ok(supportedCalendars.includes('saka'));
   assert.ok(supportedCalendars.includes('hebrew'));
   assert.ok(supportedCalendars.includes('islamic'));
   assert.ok(supportedCalendars.includes('persian'));
@@ -89,6 +99,13 @@ test('convert supports Gregorian <-> ISO Week via JDN hub', () => {
   const gregorianInput = { year: 2026, month: 5, day: 12 };
   const isoWeek = convert('gregorian', 'iso-week', gregorianInput);
   const gregorianRoundtrip = convert('iso-week', 'gregorian', isoWeek);
+  assert.deepEqual(gregorianRoundtrip, gregorianInput);
+});
+
+test('convert supports Gregorian <-> Saka via JDN hub', () => {
+  const gregorianInput = { year: 2026, month: 5, day: 12 };
+  const saka = convert('gregorian', 'saka', gregorianInput);
+  const gregorianRoundtrip = convert('saka', 'gregorian', saka);
   assert.deepEqual(gregorianRoundtrip, gregorianInput);
 });
 

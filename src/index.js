@@ -1,4 +1,5 @@
 ﻿export { gregorianToJdn, jdnToGregorian } from './calendars/gregorian.js';
+export { isoWeekToJdn, jdnToIsoWeek } from './calendars/iso-week.js';
 export { julianToJdn, jdnToJulian } from './calendars/julian.js';
 export { hebrewToJdn, jdnToHebrew, hebrewToGregorian, isHebrewLeapYear } from './calendars/hebrew.js';
 export { islamicToJdn, jdnToIslamic, islamicToGregorian } from './calendars/islamic.js';

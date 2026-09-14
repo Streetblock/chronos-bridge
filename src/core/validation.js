@@ -1,4 +1,4 @@
-﻿export function assertDateParts(parts) {
+export function assertDateParts(parts, maxMonth = 12) {
   if (!parts || typeof parts !== 'object') {
     throw new TypeError('dateParts must be an object: { year, month, day }');
   }
@@ -8,8 +8,8 @@
     throw new TypeError('year, month, and day must be integers');
   }
 
-  if (month < 1 || month > 12) {
-    throw new RangeError('month must be between 1 and 12');
+  if (month < 1 || month > maxMonth) {
+    throw new RangeError(`month must be between 1 and ${maxMonth}`);
   }
 
   if (day < 1 || day > 31) {

@@ -2,6 +2,9 @@ import { assertDateParts } from '../core/validation.js';
 
 export function julianToJdn({ year, month, day }) {
   assertDateParts({ year, month, day });
+  const leap = year % 4 === 0;
+  const lengths = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  if (day > lengths[month - 1]) throw new RangeError('Invalid day for julian month');
 
   const a = Math.floor((14 - month) / 12);
   const y = year + 4800 - a;
@@ -15,7 +18,7 @@ export function jdnToJulian(jdn) {
     throw new TypeError('jdn must be a finite number');
   }
 
-  const c = Math.floor(jdn + 32082);
+  const c = Math.floor(jdn + 0.5) + 32082;
   const d = Math.floor((4 * c + 3) / 1461);
   const e = c - Math.floor((1461 * d) / 4);
   const m = Math.floor((5 * e + 2) / 153);

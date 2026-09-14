@@ -1,8 +1,16 @@
-﻿import { assertDateParts } from '../core/validation.js';
+import { assertDateParts } from '../core/validation.js';
 import { gregorianToJdn, jdnToGregorian } from './gregorian.js';
+
+const mod = (n, divisor) => n - divisor * Math.floor(n / divisor);
+
+function daysBeforeYear(year) {
+  const y = year - 979;
+  return 365 * y + Math.floor(y / 33) * 8 + Math.floor((mod(y, 33) + 3) / 4);
+}
 
 export function gregorianToPersian({ year, month, day }) {
   assertDateParts({ year, month, day });
+  gregorianToJdn({ year, month, day }); // Also validate Gregorian month length.
 
   const gDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const jDaysInMonth = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
@@ -22,10 +30,10 @@ export function gregorianToPersian({ year, month, day }) {
 
   let jDayNo = gDayNo - 79;
   const jNp = Math.floor(jDayNo / 12053);
-  jDayNo %= 12053;
+  jDayNo = mod(jDayNo, 12053);
 
   let jy = 979 + 33 * jNp + 4 * Math.floor(jDayNo / 1461);
-  jDayNo %= 1461;
+  jDayNo = mod(jDayNo, 1461);
 
   if (jDayNo >= 366) {
     jy += Math.floor((jDayNo - 1) / 365);
@@ -46,19 +54,21 @@ export function gregorianToPersian({ year, month, day }) {
 
 export function persianToGregorian({ year, month, day }) {
   assertDateParts({ year, month, day });
+  const isLeap = daysBeforeYear(year + 1) - daysBeforeYear(year) === 366;
+  const maxDay = month <= 6 ? 31 : (month <= 11 || isLeap ? 30 : 29);
+  if (day > maxDay) throw new RangeError('Invalid day for Persian month');
 
-  let jy = year - 979;
   let jm = month - 1;
   let jd = day - 1;
 
-  let jDayNo = 365 * jy + Math.floor(jy / 33) * 8 + Math.floor((jy % 33 + 3) / 4);
+  let jDayNo = daysBeforeYear(year);
   for (let i = 0; i < jm; i++) jDayNo += i < 6 ? 31 : 30;
 
   const jNp = jDayNo + jd;
   let gDayNo = jNp + 79;
 
   let gy = 1600 + 400 * Math.floor(gDayNo / 146097);
-  gDayNo = gDayNo % 146097;
+  gDayNo = mod(gDayNo, 146097);
 
   let leap = true;
   if (gDayNo >= 36525) {

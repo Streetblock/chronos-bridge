@@ -1,7 +1,10 @@
-﻿import { assertDateParts } from '../core/validation.js';
+import { assertDateParts } from '../core/validation.js';
 
 export function gregorianToJdn({ year, month, day }) {
   assertDateParts({ year, month, day });
+  const leap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  const lengths = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  if (day > lengths[month - 1]) throw new RangeError('Invalid day for gregorian month');
 
   const a = Math.floor((14 - month) / 12);
   const y = year + 4800 - a;

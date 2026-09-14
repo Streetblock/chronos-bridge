@@ -1,10 +1,13 @@
-﻿import { assertDateParts } from '../core/validation.js';
+import { assertDateParts } from '../core/validation.js';
 import { jdnToGregorian } from './gregorian.js';
 
-const ISLAMIC_EPOCH = 1948439.5;
+const ISLAMIC_EPOCH = 1948440;
 
 export function islamicToJdn({ year, month, day }) {
   assertDateParts({ year, month, day });
+  const leap = ((11 * year + 14) % 30 + 30) % 30 < 11;
+  const maxDay = month % 2 === 1 || (month === 12 && leap) ? 30 : 29;
+  if (day > maxDay) throw new RangeError('Invalid day for Islamic month');
   return day + Math.ceil(29.5 * (month - 1)) + (year - 1) * 354 + Math.floor((3 + 11 * year) / 30) + ISLAMIC_EPOCH - 1;
 }
 
@@ -13,7 +16,7 @@ export function jdnToIslamic(jdn) {
     throw new TypeError('jdn must be a finite number');
   }
 
-  const n = Math.floor(jdn) + 0.5;
+  const n = Math.floor(jdn + 0.5);
   const year = Math.floor((30 * (n - ISLAMIC_EPOCH) + 10646) / 10631);
   const firstDayOfYear = islamicToJdn({ year, month: 1, day: 1 });
   const month = Math.min(12, Math.ceil((n - 29 - firstDayOfYear) / 29.5) + 1);

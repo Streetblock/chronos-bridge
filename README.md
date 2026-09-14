@@ -7,6 +7,10 @@ ChronosBridge focuses on mathematical calendar logic only:
 - Hebrew
 - Islamic
 - Persian (Jalali)
+- Julian
+- ISO week date
+- Saka
+- French Republican (deterministic extension)
 - Julian Day Number (JDN) bridge
 
 ## Scope
@@ -81,3 +85,9 @@ This means cross-conversions like these are supported via `convert(...)`:
 ## License
 
 MIT
+
+## Civil-day contract
+
+All modular `toJdn` functions return integer Julian Day Numbers for civil dates, consistent with the Gregorian bridge. Hebrew months use Nisan = 1, Tishri = 7, and Adar II = 13 in leap years. Religious sunset boundaries are metadata for the application layer; conversions return the associated civil calendar day. Invalid month lengths and invalid ISO week 53 are rejected rather than silently rolled over.
+
+Tests require Node.js with full ICU data. They compare Hebrew, Islamic Civil and Persian daily from 1900 through 2100 and cover historical Persian arithmetic roundtrips. This is not a guarantee of astronomical agreement outside that interval.

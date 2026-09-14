@@ -32,6 +32,8 @@ function week1MondayJdn(isoYear) {
 
 export function isoWeekToJdn({ year, week, day }) {
   assertIsoWeekParts({ year, week, day });
+  const weeks = (week1MondayJdn(year + 1) - week1MondayJdn(year)) / 7;
+  if (week > weeks) throw new RangeError('Invalid week for ISO year');
   return week1MondayJdn(year) + (week - 1) * 7 + (day - 1);
 }
 
